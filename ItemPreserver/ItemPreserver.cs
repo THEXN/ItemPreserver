@@ -11,7 +11,7 @@ namespace LifemaxExtra
         public override string Author => "肝帝熙恩";
         public override string Description => "指定物品不消耗";
         public override string Name => "ItemPreserver";
-        public override Version Version => new Version(1, 0, 2);
+        public override Version Version => new Version(1, 0, 3);
         public static Configuration Config;
         private bool[] controlUseItemOld;
         private int[] itemUseTime;
@@ -63,7 +63,7 @@ namespace LifemaxExtra
         {
             foreach (TSPlayer tsplayer in TShock.Players)
             {
-                if (!(tsplayer == null))
+                if (!(tsplayer == null) && tsplayer.Group.HasPermission("itempreserver.use"))
                 {
                     int index = tsplayer.Index;
                     Player tplayer = tsplayer.TPlayer;
