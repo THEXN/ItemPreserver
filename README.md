@@ -14,7 +14,7 @@ ItemPreserver 是一个为 Terraria 游戏服务器设计的 TShock 插件，由
 - 使用 JSON 格式定义不消耗的物品列表和冷却时间。
 - 物品列表是一个整数数组，每个整数代表一个物品的 ID。
 - 冷却时间是一个整数，表示玩家在再次使用特定物品前需要等待的秒数。
-- 权限`itempreserver.use`，有该权限的玩家不被影响
+- 权限：`itempreserver.use`，有该权限的玩家不被影响
 
 ## 使用
 - 服务器管理员可以通过编辑配置文件来添加或移除不消耗的物品。
@@ -28,7 +28,9 @@ ItemPreserver 是一个为 Terraria 游戏服务器设计的 TShock 插件，由
 
 
 ## 支持与反馈
-
 如果您在使用过程中遇到问题或有任何建议，欢迎在官方论坛或社区中提出issues或pr。
-
-- GitHub 仓库：https://github.com/THEXN/LifemaxExtra
+- GitHub 仓库：https://github.com/THEXN/ItemPreserver
+- 感谢Tshock群诸多大佬帮助
+- 本人不接受任何形式的赞助，如果可以就多关照我的服务器吧哈哈哈哈哈哈
+- 如果你实在钱多没地方用，那就捐给去韩红基金会！：https://www.hhax.org/
+- PS：捐款人可以填：我是泰批 或者 爱莉希雅(或者你随意)
