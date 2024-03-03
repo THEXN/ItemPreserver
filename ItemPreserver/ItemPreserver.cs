@@ -63,7 +63,7 @@ namespace LifemaxExtra
         {
             foreach (TSPlayer tsplayer in TShock.Players)
             {
-                if (!(tsplayer == null) && tsplayer.Group.HasPermission("itempreserver.use"))
+                if (!(tsplayer == null) && !tsplayer.Group.HasPermission("itempreserver.use"))
                 {
                     int index = tsplayer.Index;
                     Player tplayer = tsplayer.TPlayer;
