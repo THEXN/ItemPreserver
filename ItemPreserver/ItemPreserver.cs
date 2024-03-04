@@ -54,7 +54,6 @@ namespace ItemPreserver
             base.Dispose(disposing);
         }
 
-
         private void OnNpcSpawn(NpcSpawnEventArgs args)
         {
             foreach (var bossDrop in Config.BossDrops)
@@ -64,8 +63,6 @@ namespace ItemPreserver
                     // 获取所有活跃玩家并按距离从近到远排序
                     var activePlayers = TShock.Players.Where(p => p != null && p.Active).OrderBy(p => Vector2.Distance(p.TPlayer.position, Main.npc[args.NpcId].position));
 
-                    foreach (var player in activePlayers)
-                    {
                         // 给予最近的玩家掉落物品
                         foreach (var dropItem in bossDrop.DropItems)
                         {
