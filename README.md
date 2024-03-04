@@ -9,10 +9,11 @@ ItemPreserver 是一个为 Terraria 游戏服务器设计的 TShock 插件，由
 3. 将插件文件解压到 TShock 的 "ServerPlugins" 文件夹中。
 4. 重启服务器以加载插件。
 
-## 配置
+## 配置 itempreserver.receive
 - 插件的配置文件位于 `TShock SavePath` 下的 `ItemPreserverConfig.json`。
-- 自定义生成什么怪物的时候，给予随机（优先最近）玩家指定物品
-
+- 自定义生成什么boss（ID）的时候，给予最近玩家指定物品
+- 权限为`itempreserver.receive`有该权限的玩家才会被选择
+- 
 ## 注意事项
 - 暂时只支持boss,后面也许会有其他想法。
 - 确保服务器的 TShock 版本与插件兼容。
