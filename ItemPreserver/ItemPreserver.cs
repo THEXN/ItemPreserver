@@ -13,7 +13,7 @@ namespace ItemPreserver
         public override string Author => "肝帝熙恩";
         public override string Description => "指定物品不消耗";
         public override string Name => "ItemPreserver";
-        public override Version Version => new Version(1, 0, 3);
+        public override Version Version => new Version(1, 0, 4);
         public static Configuration Config;
 
         public ItemPreserver(Main game) : base(game)
