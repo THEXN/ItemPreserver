@@ -60,20 +60,27 @@ namespace ItemPreserver
             {
                 if (Main.npc[args.NpcId].boss && Main.npc[args.NpcId].type == bossDrop.BossID)
                 {
-                    // 获取所有活跃玩家并按距离从近到远排序
-                    var activePlayers = TShock.Players.Where(p => p != null && p.Active).OrderBy(p => Vector2.Distance(p.TPlayer.position, Main.npc[args.NpcId].position));
+                    // 获取所有活跃玩家并检查权限
+                    var activePlayers = TShock.Players.Where(p => p != null && p.Active);
 
-                        // 给予最近的玩家掉落物品
-                        foreach (var dropItem in bossDrop.DropItems)
-                        {
-                            player?.GiveItem(dropItem, 1, 0);
-                        }
+                    // 对具有权限的玩家按距离从近到远排序
+                    var authorizedPlayers = activePlayers.Where(p => p.HasPermission("itempreserver.receive")).OrderBy(p => Vector2.Distance(p.TPlayer.position, Main.npc[args.NpcId].position));
 
-                        // 只给一个玩家掉落物品
-                        break;
+                    // 如果没有具有权限的玩家，则直接返回
+                    if (!authorizedPlayers.Any())
+                        return;
+
+                    // 取排序后的第一个玩家
+                    var nearestPlayer = authorizedPlayers.First();
+
+                    // 给予最近的玩家掉落物品
+                    foreach (var dropItem in bossDrop.DropItems)
+                    {
+                        nearestPlayer?.GiveItem(dropItem, 1, 0);
                     }
                 }
             }
         }
+
     }
 }
