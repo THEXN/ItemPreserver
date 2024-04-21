@@ -16,7 +16,6 @@ ItemPreserver 是一个为 Terraria 游戏服务器设计的 TShock 插件，由
 - 插件的配置文件位于 `TShock SavePath` 下的 `ItemPreserverConfig.json`。
 - 自定义不消耗物品
 - 写入配置中的物品必须是可消耗物品，否则不生效，且尽在使用时会生效。
--
 
 ## 支持与反馈
 
