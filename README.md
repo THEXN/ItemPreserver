@@ -24,5 +24,3 @@ ItemPreserver 是一个为 Terraria 游戏服务器设计的 TShock 插件，由
 - GitHub 仓库：https://github.com/THEXN/ItemPreserver
 - 感谢 Tshock 群诸多大佬帮助
 - 本人不接受任何形式的赞助，如果可以就多关照我的服务器吧哈哈哈哈哈哈
-- 如果你实在钱多没地方用，那就捐给去韩红基金会！：https://www.hhax.org/
-- PS：捐款人可以填：我是泰批 或者 爱莉希雅(或者你随意)
