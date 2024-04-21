@@ -69,7 +69,7 @@ public class ItemPreserver : TerrariaPlugin
 
     private void OnSlot(object? sender, GetDataHandlers.PlayerSlotEventArgs e)
     {
-        if (ItemUse.TryGetValue(e.Player, out Dictionary<int, Pitem>? itemUse) && itemUse != null)
+        if (ItemUse.TryGetValue(e.Player, out Dictionary<int, Pitem>? itemUse) && itemUse == null)
         {
             if (itemUse.TryGetValue(e.Slot, out var slot) && slot != null)
             {
