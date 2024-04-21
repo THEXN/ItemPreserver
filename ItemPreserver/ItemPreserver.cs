@@ -10,11 +10,28 @@ namespace ItemPreserver
     [ApiVersion(2, 1)]
     public class ItemPreserver : TerrariaPlugin
     {
-        public override string Author => "肝帝熙恩";
+        public override string Author => "肝帝熙恩 & 少司命";
         public override string Description => "指定物品不消耗";
         public override string Name => "ItemPreserver";
         public override Version Version => new Version(1, 0, 4);
         public static Configuration Config;
+
+        public class Pitem
+        { 
+            public int Type { get; set; }
+
+            public int Stack { get; set; }
+
+            public Pitem(int type, int stack)
+            {
+                Type = type;
+                Stack = stack;
+            }
+        };
+
+        public Dictionary<TSPlayer, Dictionary<int, Pitem>> ItemUse = new();
+
+        public int count;
 
         public ItemPreserver(Main game) : base(game)
         {
@@ -36,10 +53,50 @@ namespace ItemPreserver
         public override void Initialize()
         {
             GeneralHooks.ReloadEvent += ReloadConfig;
-            // ServerApi.Hooks.GameUpdate.Register(this, new HookHandler<EventArgs>(this.OnUpdate));
-            ServerApi.Hooks.NpcSpawn.Register(this, OnNpcSpawn);
-            //ServerApi.Hooks.NetSendData.Register(this, OnSendData);
+            GetDataHandlers.PlayerSlot.Register(OnSlot);
 
+        }
+
+        private void OnSlot(object? sender, GetDataHandlers.PlayerSlotEventArgs e)
+        {
+            if (ItemUse.TryGetValue(e.Player, out Dictionary<int, Pitem>? itemUse) && itemUse != null)
+            {
+                if (itemUse.TryGetValue(e.Slot, out var slot) && slot != null)
+                {
+                    if (e.Type == 0 || e.Stack == 0)
+                    {
+                        if (e.Player.TPlayer.controlUseItem && e.Player.TPlayer.inventory[e.Slot].consumable && Config.NoConsumItem.Contains(slot.Type))
+                        {
+                            e.Player.TPlayer.inventory[e.Slot].netDefaults(slot.Type);
+                            e.Player.TPlayer.inventory[e.Slot].stack = 1;
+                            e.Player.SendData(PacketTypes.PlayerSlot, null, e.Player.Index, e.Slot);
+                        }
+                    }
+                    else
+                    {
+                        if (e.Player.TPlayer.controlUseItem && e.Player.TPlayer.inventory[e.Slot].consumable && Config.NoConsumItem.Contains(e.Type))
+                        {
+                            e.Player.TPlayer.inventory[e.Slot].stack = slot.Stack;
+                            e.Player.SendData(PacketTypes.PlayerSlot, null, e.Player.Index, e.Slot);
+                        }
+                        else
+                        {
+                            ItemUse[e.Player][e.Slot].Stack = e.Stack;
+                        }
+                    }
+                }
+                else
+                {
+                    ItemUse[e.Player][e.Slot] = new(e.Type, e.Stack);
+                }
+            }
+            else
+            {
+                ItemUse[e.Player] = new()
+                {
+                    { e.Slot, new(e.Type, e.Stack) }
+                };
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -47,40 +104,11 @@ namespace ItemPreserver
             if (disposing)
             {
                 GeneralHooks.ReloadEvent -= ReloadConfig;
-                //    ServerApi.Hooks.GameUpdate.Deregister(this, new HookHandler<EventArgs>(this.OnUpdate));
-                // ServerApi.Hooks.NetSendData.Register(this, OnSendData);
-                ServerApi.Hooks.NpcSpawn.Register(this, OnNpcSpawn);
             }
             base.Dispose(disposing);
         }
 
-        private void OnNpcSpawn(NpcSpawnEventArgs args)
-        {
-            foreach (var bossDrop in Config.BossDrops)
-            {
-                if (Main.npc[args.NpcId].boss && Main.npc[args.NpcId].type == bossDrop.BossID)
-                {
-                    // 获取所有活跃玩家并检查权限
-                    var activePlayers = TShock.Players.Where(p => p != null && p.Active);
-
-                    // 对具有权限的玩家按距离从近到远排序
-                    var authorizedPlayers = activePlayers.Where(p => p.HasPermission("itempreserver.receive")).OrderBy(p => Vector2.Distance(p.TPlayer.position, Main.npc[args.NpcId].position));
-
-                    // 如果没有具有权限的玩家，则直接返回
-                    if (!authorizedPlayers.Any())
-                        return;
-
-                    // 取排序后的第一个玩家
-                    var nearestPlayer = authorizedPlayers.First();
-
-                    // 给予最近的玩家掉落物品
-                    foreach (var dropItem in bossDrop.DropItems)
-                    {
-                        nearestPlayer?.GiveItem(dropItem, 1, 0);
-                    }
-                }
-            }
-        }
+     
 
     }
 }
