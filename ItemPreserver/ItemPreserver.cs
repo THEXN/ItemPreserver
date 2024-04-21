@@ -40,9 +40,23 @@ public class ItemPreserver : TerrariaPlugin
         Config.Write(Configuration.FilePath);
     }
 
-    private static void ReloadConfig(ReloadEventArgs args)
+    private void ReloadConfig(ReloadEventArgs args)
     {
         LoadConfig();
+        foreach (var ply in TShock.Players)
+        {
+            if (!ItemUse.TryGetValue(ply, out var slot) || slot == null)
+            {
+                ItemUse[ply] = new Dictionary<int, Pitem>();
+            }
+            if (ply != null && ply.Active)
+            {
+                for (int i = 0; i < ply.TPlayer.inventory.Length; i++)
+                {
+                    ItemUse[ply][i] = new(ply.TPlayer.inventory[i].netID, ply.TPlayer.inventory[i].stack);
+                }
+            }
+        }
         args.Player?.SendSuccessMessage("[{0}] 重新加载配置完毕。", typeof(ItemPreserver).Name);
     }
 
