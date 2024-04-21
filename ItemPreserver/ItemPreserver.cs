@@ -45,7 +45,7 @@ public class ItemPreserver : TerrariaPlugin
         LoadConfig();
         foreach (var ply in TShock.Players)
         {
-            if (!ItemUse.TryGetValue(ply, out var slot) && slot == null)
+            if (!ItemUse.TryGetValue(ply, out var slot) || slot == null)
             {
                 ItemUse[ply] = new Dictionary<int, Pitem>();
             }
@@ -69,7 +69,7 @@ public class ItemPreserver : TerrariaPlugin
 
     private void OnSlot(object? sender, GetDataHandlers.PlayerSlotEventArgs e)
     {
-        if (ItemUse.TryGetValue(e.Player, out Dictionary<int, Pitem>? itemUse) || itemUse == null)
+        if (ItemUse.TryGetValue(e.Player, out Dictionary<int, Pitem>? itemUse) && itemUse != null)
         {
             if (itemUse.TryGetValue(e.Slot, out var slot) && slot != null)
             {
